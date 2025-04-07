@@ -271,6 +271,7 @@ export default function RandomNumberGenerators() {
                 <div className="flex  flex-col space-y-4">
                   <div className="flex justify-between">
                     <Input
+                      min="0"
                       id="quantity"
                       type={"number"}
                       value={quantity}

@@ -80,6 +80,7 @@ const AdditiveCongruential = ({ quantity, setGeneratedNumbers,setMessage }) => {
                 <Input
                   type="number"
                   value={seed}
+                  min='0'
                   onChange={(e) => handleSeedChange(index, e.target.value)}
                   onKeyDown={preventDotComma}
                   className="border-slate-300 focus-visible:ring-purple-500"
