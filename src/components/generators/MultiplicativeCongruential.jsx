@@ -37,7 +37,7 @@ const MultiplicativeCongruential = ({quantity,setGeneratedNumbers,setMessage}) =
     <Card className="border-none p-0 shadow-lg">
       <CardHeader className="bg-gradient-to-r py-3 from-purple-600/90 to-purple-600 text-white rounded-t-lg">
         <CardTitle className="flex items-center gap-2">
-          <Sigma className="h-5 w-5" />
+          <X className="h-5 w-5" />
           Método Congruencial Multiplicativo
         </CardTitle>
         <CardDescription className="text-white/80">
