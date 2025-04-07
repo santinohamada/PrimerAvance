@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardContent,
 } from "../ui/card";
-import { Sigma } from "lucide-react";
+import { X } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useState } from "react";
