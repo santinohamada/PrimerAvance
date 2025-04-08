@@ -16,7 +16,7 @@ const MiddleSquare = ({ quantity,setGeneratedNumbers,setMessage }) => {
   const [middleSquareN, setMiddleSquareN] = useState("");
   const [middleSquareSeed, setMiddleSquareSeed] = useState("");
 
-  const handleNumberInput = (e, setter) => {
+  const handleNumberInput = (e, setter,isN=false) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
    if(value!==""){
     value = +value
@@ -24,6 +24,14 @@ const MiddleSquare = ({ quantity,setGeneratedNumbers,setMessage }) => {
    if(value===0){
     value = 1
    }
+   if (isN && middleSquareSeed.toString().length !== 0) {
+    const seedDigits = middleSquareSeed.toString().length;
+    const nDigits = value
+
+    if (nDigits >= seedDigits) {
+      return; // No permitir que t tenga igual o más dígitos que la semilla
+    }
+  }
     setter(value);
   };
 
@@ -70,7 +78,7 @@ const MiddleSquare = ({ quantity,setGeneratedNumbers,setMessage }) => {
               id="middle-square-N"
               type="number"
               value={middleSquareN}
-              onChange={(e) => handleNumberInput(e, setMiddleSquareN)}
+              onChange={(e) => handleNumberInput(e, setMiddleSquareN,true)}
               onKeyDown={preventDotComma}
               className="border-slate-300 focus-visible:ring-purple-500"
             />

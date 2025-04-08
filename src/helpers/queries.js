@@ -1,7 +1,7 @@
 export const getMiddleSquare = async (M, N, TOT) => {
   try {
     const fetchedData = await fetch(
-      `https://localhost:7158/aleatorio/cuadradosMedios?m=${M}&n=${N}&tot=${TOT}`
+      `https://generadoresypruebasapi.onrender.com/aleatorio/cuadradosMedios?m=${M}&n=${N}&tot=${TOT}`
     );
 
     const { numeros, mensaje } = await fetchedData.json();
@@ -13,7 +13,7 @@ export const getMiddleSquare = async (M, N, TOT) => {
 export const getLehmer = async (semilla, t, k, cantidadDeNumerosAGenerar) => {
   try {
     const fetchedData = await fetch(
-      `https://localhost:7158/aleatorio/lehmer?m=${semilla}&t=${t}&k=${k}&tot=${cantidadDeNumerosAGenerar}`
+      `https://generadoresypruebasapi.onrender.com/aleatorio/lehmer?m=${semilla}&t=${t}&k=${k}&tot=${cantidadDeNumerosAGenerar}`
     );
 
     const { numeros, mensaje } = await fetchedData.json();
@@ -25,7 +25,7 @@ export const getLehmer = async (semilla, t, k, cantidadDeNumerosAGenerar) => {
 export const getMixedCongruential = async (n, a, c, m, tot) => {
   try {
     const fetchedData = await fetch(
-      `https://localhost:7158/aleatorio/congruencialMixto?n=${n}&a=${a}&c=${c}&m=${m}&tot=${tot}`
+      `https://generadoresypruebasapi.onrender.com/aleatorio/congruencialMixto?n=${n}&a=${a}&c=${c}&m=${m}&tot=${tot}`
     );
 
     const { numeros, mensaje } = await fetchedData.json();
@@ -37,7 +37,7 @@ export const getMixedCongruential = async (n, a, c, m, tot) => {
 export const getMultiplicativeCongruential = async (n, a, c, m, tot) => {
   try {
     const fetchedData = await fetch(
-      `https://localhost:7158/aleatorio/congruencialMultiplicativo?n=${n}&a=${a}&c=${c}&m=${m}&tot=${tot}`
+      `https://generadoresypruebasapi.onrender.com/aleatorio/congruencialMultiplicativo?n=${n}&a=${a}&c=${c}&m=${m}&tot=${tot}`
     );
 
     const { numeros, mensaje } = await fetchedData.json();
@@ -49,7 +49,7 @@ export const getMultiplicativeCongruential = async (n, a, c, m, tot) => {
 export const postAdditiveCongruential = async (m, tot, semillas) => {
   try {
     const fetchedData = await fetch(
-      `https://localhost:7158/aleatorio/congruencialAditivo`,
+      `https://generadoresypruebasapi.onrender.com/aleatorio/congruencialAditivo`,
       {
         method: "POST",
         body: JSON.stringify({ m, tot, semillas }),
