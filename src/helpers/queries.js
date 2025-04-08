@@ -34,10 +34,10 @@ export const getMixedCongruential = async (n, a, c, m, tot) => {
     console.log(error);
   }
 };
-export const getMultiplicativeCongruential = async (n, a, c, m, tot) => {
+export const getMultiplicativeCongruential = async (n, a, m, tot) => {
   try {
     const fetchedData = await fetch(
-      `https://generadoresypruebasapi.onrender.com/aleatorio/congruencialMultiplicativo?n=${n}&a=${a}&c=${c}&m=${m}&tot=${tot}`
+      `https://generadoresypruebasapi.onrender.com/aleatorio/congruencialMultiplicativo?n=${n}&a=${a}&m=${m}&tot=${tot}`
     );
 
     const { numeros, mensaje } = await fetchedData.json();

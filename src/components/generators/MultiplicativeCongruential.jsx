@@ -12,27 +12,50 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { getMultiplicativeCongruential } from "@/helpers/queries";
 
-const MultiplicativeCongruential = ({quantity,setGeneratedNumbers,setMessage}) => {
+const MultiplicativeCongruential = ({
+  quantity,
+  setGeneratedNumbers,
+  setMessage,
+}) => {
   const [multiplicativeN, setMultiplicativeN] = useState("");
   const [multiplicativeA, setMultiplicativeA] = useState("");
-  const [multiplicativeC, setMultiplicativeC] = useState("");
+
   const [multiplicativeM, setMultiplicativeM] = useState("");
   const handleNumberInput = (e, setter) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
-   if(value!==""){
-    value = +value
-   }
-   if(value===0){
-    value = 1
-   }
+    if (value !== "") {
+      value = +value;
+    }
+    if (value === 0) {
+      value = 1;
+    }
     setter(value);
   };
 
   const preventDotComma = (e) => {
-    if (e.key === "." || e.key === "," || e.key === "-" || e.key === "+")
-      e.preventDefault();
-  };
+    const tecla = e.key;
+    const esNumero = /^[0-9]$/.test(tecla);
 
+    const teclasPermitidas = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
+    ];
+
+    const combinacionesPermitidas =
+      (e.ctrlKey || e.metaKey) &&
+      ["a", "c", "v", "x"].includes(tecla.toLowerCase());
+
+    if (
+      !esNumero &&
+      !teclasPermitidas.includes(tecla) &&
+      !combinacionesPermitidas
+    ) {
+      e.preventDefault(); // Bloquea lo que no está permitido
+    }
+  };
   return (
     <Card className="border-none p-0 shadow-lg">
       <CardHeader className="bg-gradient-to-r py-3 from-purple-600/90 to-purple-600 text-white rounded-t-lg">
@@ -76,18 +99,6 @@ const MultiplicativeCongruential = ({quantity,setGeneratedNumbers,setMessage}) =
             />
           </div>
           <div className="flex flex-col space-y-2">
-            <Label htmlFor="multiplicative-c" className="text-sm font-medium">
-              Constante Aditiva (c&gt;0)
-            </Label>
-            <Input
-              id="multiplicative-c"
-              type="number"
-              value={multiplicativeC}
-              onChange={(e) => handleNumberInput(e, setMultiplicativeC)}
-              onKeyDown={preventDotComma}
-              className="border-slate-300 focus-visible:ring-purple-500"
-            />
-
             <Label htmlFor="multiplicative-m" className="text-sm font-medium">
               Módulo (m&gt;0)
             </Label>
@@ -104,16 +115,21 @@ const MultiplicativeCongruential = ({quantity,setGeneratedNumbers,setMessage}) =
             <Button
               disabled={
                 !multiplicativeA ||
-                !multiplicativeC ||
                 quantity === 0 ||
                 !quantity ||
                 !multiplicativeM ||
                 !multiplicativeN
               }
-              onClick={async() => {
-                const {numeros,mensaje} = await getMultiplicativeCongruential(multiplicativeN,multiplicativeA,multiplicativeC,multiplicativeM,quantity)
-                setGeneratedNumbers(numeros)
-                setMessage(mensaje)
+              onClick={async () => {
+                const { numeros, mensaje } =
+                  await getMultiplicativeCongruential(
+                    multiplicativeN,
+                    multiplicativeA,
+                    multiplicativeM,
+                    quantity
+                  );
+                setGeneratedNumbers(numeros);
+                setMessage(mensaje);
               }}
               className="bg-purple-600 hover:bg-purple-700 w-full lg:w-1/6 md:w-auto md:self-end"
             >

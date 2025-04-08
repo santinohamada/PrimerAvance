@@ -36,10 +36,24 @@ const Lehmer = ({ quantity, setGeneratedNumbers, setMessage }) => {
   };
 
   const preventDotComma = (e) => {
-    if (e.key === "." || e.key === "," || e.key === "-" || e.key === "+")
-      e.preventDefault();
-  };
+    const tecla = e.key;
+    const esNumero = /^[0-9]$/.test(tecla);
 
+    const teclasPermitidas = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
+    ];
+
+    const combinacionesPermitidas = 
+      (e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(tecla.toLowerCase());
+
+    if (!esNumero && !teclasPermitidas.includes(tecla) && !combinacionesPermitidas) {
+      e.preventDefault(); // Bloquea lo que no está permitido
+    }
+  };
   return (
     <Card className="border-none p-0 shadow-lg">
       <CardHeader className="bg-gradient-to-r py-3 from-purple-600/90 to-purple-600 text-white rounded-t-lg">

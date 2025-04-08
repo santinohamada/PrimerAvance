@@ -80,7 +80,25 @@ export default function RandomNumberGenerators() {
     const hastaCursor = enteros.slice(0, cursor);
     const lineas = hastaCursor.split("\n");
     const lineaActual = lineas[lineas.length - 1];
-
+   
+     
+      const esNumero = /^[0-9]$/.test(key);
+  
+      const teclasPermitidas = [
+        "Backspace",
+        "ArrowLeft",
+        "ArrowRight",
+        "Tab",
+        "Delete",
+      ];
+  
+      const combinacionesPermitidas = 
+        (e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(key.toLowerCase());
+  
+      if (!esNumero && !teclasPermitidas.includes(key) && !combinacionesPermitidas) {
+        e.preventDefault(); // Bloquea lo que no está permitido
+      }
+  
     // Bloquear salto si la línea está vacía
     if (key === "Enter" && lineaActual.trim() === "") {
       e.preventDefault();

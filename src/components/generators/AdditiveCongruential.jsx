@@ -28,10 +28,24 @@ const AdditiveCongruential = ({ quantity, setGeneratedNumbers,setMessage }) => {
   };
 
   const preventDotComma = (e) => {
-    if (e.key === "." || e.key === "," || e.key === "-" || e.key === "+")
-      e.preventDefault();
-  };
+    const tecla = e.key;
+    const esNumero = /^[0-9]$/.test(tecla);
 
+    const teclasPermitidas = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
+    ];
+
+    const combinacionesPermitidas = 
+      (e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(tecla.toLowerCase());
+
+    if (!esNumero && !teclasPermitidas.includes(tecla) && !combinacionesPermitidas) {
+      e.preventDefault(); // Bloquea lo que no está permitido
+    }
+  };
   const handleSeedChange = (index, value) => {
     const newSeeds = [...seeds];
     newSeeds[index] = value.replace(/[.,]/g, "");
