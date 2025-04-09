@@ -37,14 +37,7 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
     if (value === 0) {
       value = 1;
     }
-    if (isN && middleSquareSeed.toString().length !== 0) {
-      const seedDigits = middleSquareSeed.toString().length;
-      const nDigits = value;
-
-      if (nDigits >= seedDigits) {
-        return; // No permitir que t tenga igual o más dígitos que la semilla
-      }
-    }
+    
     setter(value);
   };
 
