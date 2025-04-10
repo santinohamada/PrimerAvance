@@ -133,7 +133,7 @@ export const EstadisticosTest = ({ numeros }) => {
   };
 
   return (
-    <Card className="mt-6 w-3/4">
+    <Card className="mt-6 w-full md:w-3/4">
       <CardHeader>
         <CardTitle>Pruebas Estadísticas</CardTitle>
       </CardHeader>
@@ -157,7 +157,7 @@ export const EstadisticosTest = ({ numeros }) => {
                 >
                   <SelectTrigger
                     id="prueba-select"
-                    className="sm:w-full sm:mt-2"
+                    className=" mt-2 w-full"
                   >
                     <SelectValue placeholder="Seleccionar prueba" />
                   </SelectTrigger>
@@ -181,14 +181,14 @@ export const EstadisticosTest = ({ numeros }) => {
 
               {pruebaSeleccionada === "promedios" && (
                 <>
-                  <div className="w-full">
+                  <div >
                     <Label>
                       <p>
                         Z<sub>&alpha;</sub>
                       </p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="estadisticoComparador"
                       type="number"
                       value={estadisticoComparador.estadisticoComparador}
@@ -199,26 +199,26 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "frecuencia" && (
                 <>
-                  <div className="w-full">
+                  <div >
                     <Label>
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
                       </p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="estadisticoComparador"
                       type="number"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div className="w-full">
-                    <Label className={"w-100"}>
+                  <div >
+                    <Label >
                       <p>x</p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="numeroSubIntervalos"
                       type="text"
                       value={estadisticoComparador.numeroSubIntervalos}
@@ -229,26 +229,26 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "serie" && (
                 <>
-                  <div className="w-full">
+                  <div >
                     <Label>
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
                       </p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="estadisticoComparador"
                       type="number"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div className="w-full">
-                    <Label className={"w-100"}>
+                  <div >
+                    <Label >
                       <p>x</p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="numeroSubIntervalos"
                       type="number"
                       value={estadisticoComparador.numeroSubIntervalos}
@@ -259,26 +259,26 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "kolmogorovSmirnov" && (
                 <>
-                  <div className="w-full">
+                  <div >
                     <Label>
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
                       </p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="estadisticoComparador"
                       type="number"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div className="w-full">
-                    <Label className={"w-100"}>
+                  <div >
+                    <Label >
                       <p>x</p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="numeroSubIntervalos"
                       type="number"
                       value={estadisticoComparador.numeroSubIntervalos}
@@ -296,7 +296,7 @@ export const EstadisticosTest = ({ numeros }) => {
                       </p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="estadisticoComparador"
                       type="number"
                       value={estadisticoComparador.estadisticoComparador}
@@ -304,11 +304,11 @@ export const EstadisticosTest = ({ numeros }) => {
                     />
                   </div>
                   <div className="w-full">
-                    <Label className={"w-100"}>
+                    <Label >
                       <p>x</p>
                     </Label>
                     <Input
-                      className={"sm:mt-2"}
+                      className={"mt-2"}
                       id="numeroSubIntervalos"
                       type="number"
                       value={estadisticoComparador.numeroSubIntervalos}
