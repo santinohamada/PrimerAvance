@@ -26,7 +26,7 @@ const ESTADISTICO_INITIAL_VALUE = {
   estadisticoComparador: 0,
   numeroSubIntervalos: 1,
   divisionCeldas: 0,
-}
+};
 export const EstadisticosTest = ({ numeros }) => {
   const formWhitoutAction = async () => {
     if (pruebaSeleccionada === "promedios") {
@@ -64,7 +64,9 @@ export const EstadisticosTest = ({ numeros }) => {
   };
 
   const [pruebaSeleccionada, setPruebaSeleccionada] = useState("promedios");
-  const [estadisticoComparador, setEstadisticoComparador] = useState(ESTADISTICO_INITIAL_VALUE); // Valor inicial para promedios
+  const [estadisticoComparador, setEstadisticoComparador] = useState(
+    ESTADISTICO_INITIAL_VALUE
+  ); // Valor inicial para promedios
   const [resultadoPrueba, setResultadoPrueba] = useState({
     esAleatorio: false,
     estadistico: 0,
@@ -72,41 +74,42 @@ export const EstadisticosTest = ({ numeros }) => {
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const [disabledEnter, setDisabledEnter] = useState(true);
   const [formStatus, formAction, isPending] = useActionState(formWhitoutAction);
-console.log(estadisticoComparador.numeroSubIntervalos)
   const manejarCambio = (e) => {
     let input = e.target.value;
     const id = e.target.id;
-  
+
     // Habilita/deshabilita botón enter
     setDisabledEnter(input === "");
-  
+
     if (id === "numeroSubIntervalos") {
       // Solo permitir números enteros (sin puntos)
       input = input.replace(/[^0-9]/g, "");
-   
+
       // Valor mínimo 1
       if (input !== "") {
         const valor = parseInt(input, 10);
         if (valor < 1) input = "1";
       }
+      if (input === "") {
+        setDisabledEnter(true);
+      }
     } else {
       // Permitir solo números y un solo punto decimal
       input = input.replace(/[^0-9.]/g, "");
-  
+
       // Evitar múltiples puntos decimales
       const partes = input.split(".");
       if (partes.length > 2) {
         input = partes[0] + "." + partes.slice(1).join("");
       }
     }
-  
+
     // Actualizar estado
     setEstadisticoComparador((prevState) => ({
       ...prevState,
       [id]: input,
     }));
   };
-  
 
   if (!numeros || numeros.length === 0) {
     return (
@@ -169,7 +172,9 @@ console.log(estadisticoComparador.numeroSubIntervalos)
                     <SelectItem value="kolmogorovSmirnov">
                       Prueba de Kolmogorov-Smirnov
                     </SelectItem>
-                    <SelectItem value="corridas">Prueba de la Corrida</SelectItem>
+                    <SelectItem value="corridas">
+                      Prueba de la Corrida
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
