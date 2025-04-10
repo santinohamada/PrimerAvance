@@ -123,9 +123,9 @@ console.log(estadisticoComparador.numeroSubIntervalos)
 
   const nombresPruebas = {
     promedios: "Prueba de Promedios",
-    varianza: "Prueba de Varianza",
-    chiCuadrado: "Prueba Chi-Cuadrado",
-    kolmogorovSmirnov: "Prueba Kolmogorov-Smirnov",
+    frecuencia: "Prueba de Frecuencia",
+    serie: "Prueba de la Serie",
+    kolmogorovSmirnov: "Prueba de Kolmogorov-Smirnov",
     corridas: "Prueba de Corridas",
   };
 
@@ -160,16 +160,16 @@ console.log(estadisticoComparador.numeroSubIntervalos)
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="promedios">
-                      Prueba de Promedios
+                      Prueba de los Promedios
                     </SelectItem>
                     <SelectItem value="frecuencia">
-                      Prueba de Frecuencia
+                      Prueba de la Frecuencia
                     </SelectItem>
-                    <SelectItem value="serie">Prueba de Serie</SelectItem>
+                    <SelectItem value="serie">Prueba de la Serie</SelectItem>
                     <SelectItem value="kolmogorovSmirnov">
-                      Prueba Kolmogorov-Smirnov
+                      Prueba de Kolmogorov-Smirnov
                     </SelectItem>
-                    <SelectItem value="corridas">Prueba de Corridas</SelectItem>
+                    <SelectItem value="corridas">Prueba de la Corrida</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
