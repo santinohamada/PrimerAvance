@@ -1,5 +1,5 @@
 import { useState, useEffect, useActionState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Table,
   TableBody,
@@ -7,8 +7,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+} from "../ui/table";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoIcon, CheckCircle, XCircle } from "lucide-react";
 import {
   Select,
@@ -16,13 +16,17 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
+} from "../ui/select";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 import { postFrequencyTest, postMeanTest } from "@/helpers/queries";
-import Loader from "./ui/Loader";
-
+import Loader from "../ui/Loader";
+const ESTADISTICO_INITIAL_VALUE = {
+  estadisticoComparador: 0,
+  numeroSubIntervalos: 1,
+  divisionCeldas: 0,
+}
 export const EstadisticosTest = ({ numeros }) => {
   const formWhitoutAction = async () => {
     if (pruebaSeleccionada === "promedios") {
@@ -60,11 +64,7 @@ export const EstadisticosTest = ({ numeros }) => {
   };
 
   const [pruebaSeleccionada, setPruebaSeleccionada] = useState("promedios");
-  const [estadisticoComparador, setEstadisticoComparador] = useState({
-    estadisticoComparador: 0,
-    numeroSubIntervalos: 1,
-    divisionCeldas: 0,
-  }); // Valor inicial para promedios
+  const [estadisticoComparador, setEstadisticoComparador] = useState(ESTADISTICO_INITIAL_VALUE); // Valor inicial para promedios
   const [resultadoPrueba, setResultadoPrueba] = useState({
     esAleatorio: false,
     estadistico: 0,
@@ -72,7 +72,7 @@ export const EstadisticosTest = ({ numeros }) => {
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const [disabledEnter, setDisabledEnter] = useState(true);
   const [formStatus, formAction, isPending] = useActionState(formWhitoutAction);
-
+console.log(estadisticoComparador.numeroSubIntervalos)
   const manejarCambio = (e) => {
     let input = e.target.value;
     const id = e.target.id;
@@ -149,11 +149,7 @@ export const EstadisticosTest = ({ numeros }) => {
                     setPruebaSeleccionada(value);
                     setMostrarResultados(false);
                     setResultadoPrueba(null);
-                    setEstadisticoComparador({
-                      estadisticoComparador: 0,
-                      numeroSubIntervalos: 0,
-                      divisionCeldas: 0,
-                    });
+                    setEstadisticoComparador(ESTADISTICO_INITIAL_VALUE);
                   }}
                 >
                   <SelectTrigger

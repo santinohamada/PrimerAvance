@@ -30,14 +30,6 @@ import {
   Sigma,
   X,
   Activity,
-  LineChartIcon,
-  CheckCircle2,
-  XCircle,
-  SlidersHorizontal,
-  BarChart2,
-  LineChart,
-  ActivityIcon,
-  TrendingDown,
 } from "lucide-react";
 import { Textarea } from "./components/ui/textarea";
 import MiddleSquare from "./components/generators/MiddleSquare";
@@ -45,14 +37,8 @@ import Lehmer from "./components/generators/Lehmer";
 import MixedCongruential from "./components/generators/MixedCongruential";
 import MultiplicativeCongruential from "./components/generators/MultiplicativeCongruential";
 import AdditiveCongruential from "./components/generators/AdditiveCongruential";
-import MeanTest from "./components/tests/MeanTest";
-import FrequencyTest from "./components/tests/FrequencyTest";
-import SeriesTest from "./components/tests/SeriesTest";
-import KSTest from "./components/tests/KSTest";
-import AboveAndBelow from "./components/tests/AboveAndBelow";
-import { Checkbox } from "./components/ui/checkbox";
-import { ResultadosPage } from "./components/tests/ResultadosPage";
-import { EstadisticosTest } from "./components/EstadisticosTest";
+
+import { EstadisticosTest } from "./components/tests/EstadisticosTest";
 
 export default function RandomNumberGenerators() {
   const [message, setMessage] = useState("");

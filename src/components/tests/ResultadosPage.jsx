@@ -1,34 +1,44 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { EstadisticosTest } from "../EstadisticosTest"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { EstadisticosTest } from "./EstadisticosTest";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
 
-
-
-export const ResultadosPage = ({ numeros, metodo, semilla, digitosTomados }) => {
-  const [numerosNormalizados, setNumerosNormalizados] = useState([])
+export const ResultadosPage = ({
+  numeros,
+  metodo,
+  semilla,
+  digitosTomados,
+}) => {
+  const [numerosNormalizados, setNumerosNormalizados] = useState([]);
 
   useEffect(() => {
     // Normalizar los números al rango [0,1) si es necesario
     if (numeros && numeros.length > 0) {
       // Verificar si los números ya están en el rango [0,1)
-      const yaEstanNormalizados = numeros.every((num) => num >= 0 && num < 1)
+      const yaEstanNormalizados = numeros.every((num) => num >= 0 && num < 1);
 
       if (yaEstanNormalizados) {
-        setNumerosNormalizados(numeros)
+        setNumerosNormalizados(numeros);
       } else {
         // Normalizar dividiendo por el máximo valor posible según los dígitos
-        const maxValor = Math.pow(10, digitosTomados || 4)
-        const normalizados = numeros.map((num) => num / maxValor)
-        setNumerosNormalizados(normalizados)
+        const maxValor = Math.pow(10, digitosTomados || 4);
+        const normalizados = numeros.map((num) => num / maxValor);
+        setNumerosNormalizados(normalizados);
       }
     }
-  }, [numeros, digitosTomados])
+  }, [numeros, digitosTomados]);
 
   if (!numeros || numeros.length === 0) {
-    return <div>No hay números para mostrar resultados.</div>
+    return <div>No hay números para mostrar resultados.</div>;
   }
 
   return (
@@ -74,7 +84,9 @@ export const ResultadosPage = ({ numeros, metodo, semilla, digitosTomados }) => 
                     <TableRow key={index}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{num}</TableCell>
-                      <TableCell>{numerosNormalizados[index]?.toFixed(6)}</TableCell>
+                      <TableCell>
+                        {numerosNormalizados[index]?.toFixed(6)}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -84,7 +96,11 @@ export const ResultadosPage = ({ numeros, metodo, semilla, digitosTomados }) => 
         </CardContent>
       </Card>
 
-      <EstadisticosTest numeros={numerosNormalizados} semilla={semilla || 0} digitosTomados={digitosTomados || 0} />
+      <EstadisticosTest
+        numeros={numerosNormalizados}
+        semilla={semilla || 0}
+        digitosTomados={digitosTomados || 0}
+      />
     </div>
-  )
-}
+  );
+};
