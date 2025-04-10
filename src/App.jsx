@@ -33,6 +33,11 @@ import {
   LineChartIcon,
   CheckCircle2,
   XCircle,
+  SlidersHorizontal,
+  BarChart2,
+  LineChart,
+  ActivityIcon,
+  TrendingDown,
 } from "lucide-react";
 import { Textarea } from "./components/ui/textarea";
 import MiddleSquare from "./components/generators/MiddleSquare";
@@ -40,6 +45,14 @@ import Lehmer from "./components/generators/Lehmer";
 import MixedCongruential from "./components/generators/MixedCongruential";
 import MultiplicativeCongruential from "./components/generators/MultiplicativeCongruential";
 import AdditiveCongruential from "./components/generators/AdditiveCongruential";
+import MeanTest from "./components/tests/MeanTest";
+import FrequencyTest from "./components/tests/FrequencyTest";
+import SeriesTest from "./components/tests/SeriesTest";
+import KSTest from "./components/tests/KSTest";
+import AboveAndBelow from "./components/tests/AboveAndBelow";
+import { Checkbox } from "./components/ui/checkbox";
+import { ResultadosPage } from "./components/tests/ResultadosPage";
+import { EstadisticosTest } from "./components/EstadisticosTest";
 
 export default function RandomNumberGenerators() {
   const [message, setMessage] = useState("");
@@ -80,25 +93,29 @@ export default function RandomNumberGenerators() {
     const hastaCursor = enteros.slice(0, cursor);
     const lineas = hastaCursor.split("\n");
     const lineaActual = lineas[lineas.length - 1];
-   
-     
-      const esNumero = /^[0-9]$/.test(key);
-  
-      const teclasPermitidas = [
-        "Backspace",
-        "ArrowLeft",
-        "ArrowRight",
-        "Tab",
-        "Delete",
-      ];
-  
-      const combinacionesPermitidas = 
-        (e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(key.toLowerCase());
-  
-      if (!esNumero && !teclasPermitidas.includes(key) && !combinacionesPermitidas) {
-        e.preventDefault(); // Bloquea lo que no está permitido
-      }
-  
+
+    const esNumero = /^[0-9]$/.test(key);
+
+    const teclasPermitidas = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
+    ];
+
+    const combinacionesPermitidas =
+      (e.ctrlKey || e.metaKey) &&
+      ["a", "c", "v", "x"].includes(key.toLowerCase());
+
+    if (
+      !esNumero &&
+      !teclasPermitidas.includes(key) &&
+      !combinacionesPermitidas
+    ) {
+      e.preventDefault(); // Bloquea lo que no está permitido
+    }
+
     // Bloquear salto si la línea está vacía
     if (key === "Enter" && lineaActual.trim() === "") {
       e.preventDefault();
@@ -390,7 +407,6 @@ export default function RandomNumberGenerators() {
                   quantity={quantity}
                   setGeneratedNumbers={setGeneratedNumbers}
                   setMessage={setMessage}
-                  
                 />
               </TabsContent>
               <TabsContent value="lehmer">
@@ -435,7 +451,7 @@ export default function RandomNumberGenerators() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-[350px]">
+                <ScrollArea className="max-h-[350px] overflow-y-scroll">
                   <Table>
                     <TableHeader className="bg-slate-100 dark:bg-slate-800 sticky top-0">
                       <TableRow>
@@ -478,228 +494,10 @@ export default function RandomNumberGenerators() {
             )}
           </div>
         )}
-
-        {testResults && (
-          <div className="mt-8">
-            <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
-              Pruebas Estadísticas
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="bg-gradient-to-r from-cyan-500/90 to-cyan-600 text-white rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Activity className="h-5 w-5" />
-                    Prueba de los Promedios
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 bg-white dark:bg-slate-800 rounded-b-lg">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Media:</span>
-                      <span className="font-mono">
-                        {testResults.meanTest.mean.toFixed(6)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Valor Esperado:</span>
-                      <span className="font-mono">
-                        {testResults.meanTest.expected}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Resultado:</span>
-                      {testResults.meanTest.passed ? (
-                        <div className="flex items-center gap-1 text-green-600 font-bold">
-                          <CheckCircle2 className="h-5 w-5" />
-                          <span>Pasó</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1 text-red-500 font-bold">
-                          <XCircle className="h-5 w-5" />
-                          <span>No Pasó</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="bg-gradient-to-r from-cyan-500/90 to-cyan-600 text-white rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <BarChart3 className="h-5 w-5" />
-                    Prueba de Frecuencia
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 bg-white dark:bg-slate-800 rounded-b-lg">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Chi-Cuadrado:</span>
-                      <span className="font-mono">
-                        {testResults.frequencyTest.chiSquare.toFixed(4)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Valor Crítico:</span>
-                      <span className="font-mono">16.92</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Resultado:</span>
-                      {testResults.frequencyTest.passed ? (
-                        <div className="flex items-center gap-1 text-green-600 font-bold">
-                          <CheckCircle2 className="h-5 w-5" />
-                          <span>Pasó</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1 text-red-500 font-bold">
-                          <XCircle className="h-5 w-5" />
-                          <span>No Pasó</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="h-[120px] mt-4">
-                      <BarChart
-                        data={testResults.frequencyTest.frequencies.map(
-                          (freq, i) => ({
-                            x: `${i / 10}-${(i + 1) / 10}`,
-                            y: freq,
-                          })
-                        )}
-                        xLabel="Intervalo"
-                        yLabel="Frecuencia"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="bg-gradient-to-r from-cyan-500/90 to-cyan-600 text-white rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Sigma className="h-5 w-5" />
-                    Prueba de Kolmogorov-Smirnov
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 bg-white dark:bg-slate-800 rounded-b-lg">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Diferencia Máxima:</span>
-                      <span className="font-mono">
-                        {testResults.ksTest.maxDiff.toFixed(4)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Valor Crítico:</span>
-                      <span className="font-mono">
-                        {testResults.ksTest.criticalValue.toFixed(4)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Resultado:</span>
-                      {testResults.ksTest.passed ? (
-                        <div className="flex items-center gap-1 text-green-600 font-bold">
-                          <CheckCircle2 className="h-5 w-5" />
-                          <span>Pasó</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1 text-red-500 font-bold">
-                          <XCircle className="h-5 w-5" />
-                          <span>No Pasó</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="bg-gradient-to-r from-cyan-500/90 to-cyan-600 text-white rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Activity className="h-5 w-5" />
-                    Prueba de Corrida
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 bg-white dark:bg-slate-800 rounded-b-lg">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Corridas:</span>
-                      <span className="font-mono">
-                        {testResults.runsTest.runs}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Corridas Esperadas:</span>
-                      <span className="font-mono">
-                        {testResults.runsTest.expectedRuns.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
-                      <span className="font-medium">Estadístico Z:</span>
-                      <span className="font-mono">
-                        {testResults.runsTest.z.toFixed(4)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Resultado:</span>
-                      {testResults.runsTest.passed ? (
-                        <div className="flex items-center gap-1 text-green-600 font-bold">
-                          <CheckCircle2 className="h-5 w-5" />
-                          <span>Pasó</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1 text-red-500 font-bold">
-                          <XCircle className="h-5 w-5" />
-                          <span>No Pasó</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 md:col-span-2 lg:col-span-2">
-                <CardHeader className="bg-gradient-to-r from-cyan-500/90 to-cyan-600 text-white rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <LineChartIcon className="h-5 w-5" />
-                    Prueba de la Serie
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 bg-white dark:bg-slate-800 rounded-b-lg">
-                  <div className="space-y-4">
-                    <p className="font-medium">Pares (primeros 10):</p>
-                    <ScrollArea className="h-[180px]">
-                      <Table>
-                        <TableHeader className="bg-slate-100 dark:bg-slate-700 sticky top-0">
-                          <TableRow>
-                            <TableHead className="text-center">i</TableHead>
-                            <TableHead className="text-center">Ri</TableHead>
-                            <TableHead className="text-center">Ri+1</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {testResults.seriesTest.pairs.map((pair, index) => (
-                            <TableRow
-                              key={index}
-                              className="hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                            >
-                              <TableCell className="text-center">
-                                {index + 1}
-                              </TableCell>
-                              <TableCell className="text-center font-mono">
-                                {pair[0].toFixed(4)}
-                              </TableCell>
-                              <TableCell className="text-center font-mono">
-                                {pair[1].toFixed(4)}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </ScrollArea>
-                  </div>
-                </CardContent>
-              </Card>
+        {isAutomatic && (
+          <div className="space-y-4">
+            <div className="flex justify-center mt-6">
+              <EstadisticosTest numeros={generatedNumbers} />
             </div>
           </div>
         )}

@@ -140,7 +140,7 @@ const MultiplicativeCongruential = ({
                   !multiplicativeN ||
                   isPending
                 }
-                className="bg-purple-600 hover:bg-purple-700 w-full lg:w-1/6 md:w-auto md:self-end"
+                className="bg-purple-600 hover:bg-purple-700 w-full lg:w-1/4 md:w-auto md:self-end"
               >
                 Generar Números
               </Button>

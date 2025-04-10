@@ -65,3 +65,41 @@ export const postAdditiveCongruential = async (m, tot, semillas) => {
     console.log(error);
   }
 };
+export const postMeanTest = async (comparador,valoresU) => {
+  try {
+    const fetchedData = await fetch(
+      `https://generadoresypruebasapi.onrender.com/prueba/promedios`,
+      {
+        method: "POST",
+        body: JSON.stringify({ comparador,valoresU}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { esAleatorio,estadistico } = await fetchedData.json();
+    return { esAleatorio,estadistico } ;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const postFrequencyTest = async (comparador,valoresU,x) => {
+  try {
+    const fetchedData = await fetch(
+      `https://generadoresypruebasapi.onrender.com/prueba/frecuencia`,
+      {
+        method: "POST",
+        body: JSON.stringify({ comparador,valoresU,x}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { esAleatorio,estadistico } = await fetchedData.json();
+    return { esAleatorio,estadistico } ;
+  } catch (error) {
+    console.log(error);
+  }
+};
