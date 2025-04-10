@@ -35,7 +35,7 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
       value = +value;
     }
  
-    if (isN && middleSquareN >= middleSquareSeed.toString().length) {
+    if (isN && value >= middleSquareSeed.toString().length) {
       value = middleSquareSeed.toString().length;
     }
     if (value === 0) {
