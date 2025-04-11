@@ -30,6 +30,7 @@ import {
   Sigma,
   X,
   Activity,
+  KeyboardIcon,
 } from "lucide-react";
 import { Textarea } from "./components/ui/textarea";
 import MiddleSquare from "./components/generators/MiddleSquare";
@@ -148,6 +149,7 @@ export default function RandomNumberGenerators() {
 
     // Reemplazar guiones (normales, largos y em-dash) seguidos de espacios u otros saltos con un solo salto.
     input = input.replace(/[-–—]\s*/g, "\n");
+    input = input.replace(/[;]\s*/g, "\n");
 
     // Solo permite números, puntos y saltos de línea.
     input = input.replace(/[^0-9.\n]/g, "");
@@ -226,7 +228,7 @@ export default function RandomNumberGenerators() {
     }
 
     // --- Guion (y variantes): No permitir salto de línea si la línea actual está vacía ---
-    if (key === "-" || key === "–" || key === "—") {
+    if (key === "-" || key === "–" || key === "—" ||key === ";") {
       if (currentLine.trim() === "") {
         e.preventDefault();
         return;
@@ -303,11 +305,11 @@ export default function RandomNumberGenerators() {
           <Card className="mb-8 p-0 gap-2 border-none shadow-lg">
             <CardHeader className="bg-gradient-to-r py-3 from-purple-600 to-cyan-500 text-white rounded-t-lg">
               <CardTitle className="flex items-center ">
-                <SquareDot className="h-5 w-5" />
+                <KeyboardIcon className="h-5 w-5 me-2" />
                 Ingreso Manual de Números
               </CardTitle>
               <CardDescription className="text-white/80">
-                Ingrese los números separados por comas (ej: 0.1, 0.5, 0.3)
+                Ingrese los números (Separados por saltos de linea).
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6 pt-0">
