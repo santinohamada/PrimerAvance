@@ -113,10 +113,10 @@ export const EstadisticosTest = ({ numeros }) => {
 
   if (!numeros || numeros.length === 0) {
     return (
-      <Alert>
+      <Alert className={"bg-gradient-to-r py-4  from-cyan-500 to-purple-600 text-white rounded-t-lg"}>
         <InfoIcon className="h-4 w-4" />
         <AlertTitle>Sin datos para analizar</AlertTitle>
-        <AlertDescription>
+        <AlertDescription className="text-white">
           Genera o ingresa números para ver los resultados de las pruebas
           estadísticas.
         </AlertDescription>
@@ -133,8 +133,8 @@ export const EstadisticosTest = ({ numeros }) => {
   };
 
   return (
-    <Card className="mt-6 w-full md:w-3/4">
-      <CardHeader>
+    <Card className="mt-6 pb-2 pt-0 w-full md:w-3/4">
+      <CardHeader className="bg-gradient-to-r py-4  from-cyan-500 to-purple-600 text-white rounded-t-lg">
         <CardTitle>Pruebas Estadísticas</CardTitle>
       </CardHeader>
       <CardContent>
