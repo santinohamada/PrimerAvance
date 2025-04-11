@@ -41,10 +41,21 @@ import AdditiveCongruential from "./components/generators/AdditiveCongruential";
 import { EstadisticosTest } from "./components/tests/EstadisticosTest";
 
 export default function RandomNumberGenerators() {
+  const formWithoutAction = async (formData) => {
+    const input = formData.get("ingresoManual");
+    const data = input.trim().split("\n");
+    setManualNumbers(data);
+    setValorCargado(valor);
+  };
   const [message, setMessage] = useState("");
   const [disabledEnter, setDisabledEnter] = useState(true);
   const [valor, setValor] = useState("");
   const [enteros, setEnteros] = useState("");
+  const [valorCargado, setValorCargado] = useState("");
+  const [generatedNumbers, setGeneratedNumbers] = useState([]);
+  const [manualNumbers, setManualNumbers] = useState([]);
+  const [isAutomatic, setIsAutomatic] = useState(true);
+  const [quantity, setQuantity] = useState(10);
   const handleCambioEnteros = (e) => {
     let input = e.target.value;
 
@@ -128,91 +139,139 @@ export default function RandomNumberGenerators() {
   };
 
   const manejarCambio = (e) => {
+    setManualNumbers([]);
     setDisabledEnter(false);
     let input = e.target.value;
 
-    // Solo permite números, puntos y saltos de línea
+    // Reemplazar comas por puntos.
+    input = input.replace(/,/g, ".");
+
+    // Reemplazar guiones (normales, largos y em-dash) seguidos de espacios u otros saltos con un solo salto.
+    input = input.replace(/[-–—]\s*/g, "\n");
+
+    // Solo permite números, puntos y saltos de línea.
     input = input.replace(/[^0-9.\n]/g, "");
 
-    // Separa por líneas
-    const lineas = input.split("\n");
+    // Separa el contenido en líneas.
+    let lineas = input.split("\n");
 
-    const nuevasLineas = [];
-
-    for (let i = 0; i < lineas.length; i++) {
-      const linea = lineas[i].trim();
-
-      // Saltar líneas vacías seguidas
-      if (linea === "" && nuevasLineas[nuevasLineas.length - 1] === "") {
-        continue;
+    // Si proviene de un pegado, se eliminan TODAS las líneas vacías
+    if (e.inputType && e.inputType === "insertFromPaste") {
+      lineas = lineas.filter((linea) => linea.trim() !== "");
+    } else {
+      // Para entrada manual se permite, a lo sumo, una línea vacía sin ser consecutivas.
+      const nuevasLineas = [];
+      for (let i = 0; i < lineas.length; i++) {
+        const linea = lineas[i].trim();
+        // Si la línea está vacía y la anterior ya es vacía, se omite.
+        if (
+          linea === "" &&
+          nuevasLineas.length &&
+          nuevasLineas[nuevasLineas.length - 1] === ""
+        ) {
+          continue;
+        }
+        nuevasLineas.push(linea);
       }
-
-      // Evitar múltiples puntos por línea
-      const puntos = (linea.match(/\./g) || []).length;
-      if (puntos > 1) continue;
-
-      // No permitir líneas que terminan en punto
-      if (linea.endsWith(".")) {
-        setDisabledEnter(true);
-        nuevasLineas.push(linea); // mantenerla, pero no permitir salto luego
-        break; // no agregar más líneas después
-      }
-
-      nuevasLineas.push(linea);
+      lineas = nuevasLineas;
     }
 
-    setValor(nuevasLineas.join("\n"));
+    // Proceso adicional para evitar múltiples puntos por línea y líneas que terminen en punto.
+    const finalLines = [];
+    for (let i = 0; i < lineas.length; i++) {
+      const linea = lineas[i];
+      // Se cuentan los puntos.
+      const puntos = (linea.match(/\./g) || []).length;
+      if (puntos > 1) continue;
+      // Si la línea termina en punto, se deshabilita más saltos.
+      if (linea.endsWith(".")) {
+        setDisabledEnter(true);
+        finalLines.push(linea);
+        break;
+      }
+      finalLines.push(linea);
+    }
+
+    setValor(finalLines.join("\n"));
   };
 
   const manejarKeyDown = (e) => {
     const { key } = e;
+    const cursor = e.target.selectionStart;
+    const antes = valor.slice(0, cursor);
+    const despues = valor.slice(cursor);
+
+    // Separamos el contenido hasta el cursor en líneas.
+    const lineasHastaCursor = antes.split("\n");
+    const currentLine = lineasHastaCursor[lineasHastaCursor.length - 1] || "";
+    const previousLine = lineasHastaCursor[lineasHastaCursor.length - 2] || "";
+
+    // --- Coma: No permitir si la línea actual está vacía ---
+    if (key === ",") {
+      if (currentLine.trim() === "") {
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault();
+      // Se reemplaza la coma por un punto.
+
+      if (antes.includes(".")) return;
+      const nuevoValor = `${antes}.${despues}`;
+      setValor(nuevoValor);
+      setTimeout(() => {
+        const nuevaPos = antes.length + 1;
+        e.target.setSelectionRange(nuevaPos, nuevaPos);
+      }, 0);
+      return;
+    }
+
+    // --- Guion (y variantes): No permitir salto de línea si la línea actual está vacía ---
+    if (key === "-" || key === "–" || key === "—") {
+      if (currentLine.trim() === "") {
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault();
+      const nuevoValor = `${antes}\n${despues}`;
+      setValor(nuevoValor);
+      setTimeout(() => {
+        const nuevaPos = antes.length + 1;
+        e.target.setSelectionRange(nuevaPos, nuevaPos);
+      }, 0);
+      return;
+    }
+
+    // --- Enter: Permitir salto de línea solo si la línea actual NO está vacía ---
 
     if (key === "Enter") {
-      const cursor = e.target.selectionStart;
-      const hastaCursor = valor.slice(0, cursor);
-      const lineas = hastaCursor.split("\n");
-      const lineaActual = lineas[lineas.length - 1];
-
-      // Si la línea actual termina en punto, bloquear Enter
-      if (lineaActual.trim().endsWith(".")) {
+      // Si la línea actual ya está vacía, se bloquea el Enter.
+      if (currentLine.trim() === "") {
         e.preventDefault();
+        return;
       }
-
-      // Si línea actual está vacía, también bloquear salto
-      if (lineaActual.trim() === "") {
+      // Se evita insertar otro salto si justo después ya hay uno.
+      if (despues.startsWith("\n")) {
         e.preventDefault();
-      }
-
-      // Evita dos líneas vacías seguidas
-      const despuesCursor = valor.slice(cursor);
-      if (despuesCursor.startsWith("\n")) {
-        e.preventDefault();
+        return;
       }
     }
 
-    // Evitar doble punto (..)
+    // --- Punto: No permitir si no hay un número previo ni si ya hay un punto en la línea ---
     if (key === ".") {
-      const cursor = e.target.selectionStart;
-      const hastaCursor = valor.slice(0, cursor);
-      const lineas = hastaCursor.split("\n");
-      const lineaActual = lineas[lineas.length - 1];
-
-      if (lineaActual.endsWith(".")) {
+      const trimmedCurrentLine = currentLine.trimEnd();
+      if (trimmedCurrentLine === "" || !/\d$/.test(trimmedCurrentLine)) {
         e.preventDefault();
+        return;
       }
 
-      // Solo un punto por número
-      const puntos = (lineaActual.match(/\./g) || []).length;
+      const puntos = (currentLine.match(/\./g) || []).length;
       if (puntos >= 1) {
         e.preventDefault();
+        return;
       }
     }
   };
 
-  const [generatedNumbers, setGeneratedNumbers] = useState([]);
-  const [testResults, setTestResults] = useState(null);
-  const [isAutomatic, setIsAutomatic] = useState(true);
-  const [quantity, setQuantity] = useState(10);
   return (
     <div className="min-h-screen bg-gradient-to-b  from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       <div className="container mx-auto py-8 max-w-5xl px-4">
@@ -241,9 +300,9 @@ export default function RandomNumberGenerators() {
         </div>
 
         {!isAutomatic ? (
-          <Card className="mb-8 p-0 border-none shadow-lg">
+          <Card className="mb-8 p-0 gap-2 border-none shadow-lg">
             <CardHeader className="bg-gradient-to-r py-3 from-purple-600 to-cyan-500 text-white rounded-t-lg">
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center ">
                 <SquareDot className="h-5 w-5" />
                 Ingreso Manual de Números
               </CardTitle>
@@ -251,14 +310,16 @@ export default function RandomNumberGenerators() {
                 Ingrese los números separados por comas (ej: 0.1, 0.5, 0.3)
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-6 pt-0">
               <div className="grid gap-4">
                 <div className="flex flex-col space-y-2">
                   <Label htmlFor="manual-input" className="text-sm font-medium">
                     Números
                   </Label>
-                  <div className="flex space-x-2">
+                  <form action={formWithoutAction} className="flex space-x-2">
                     <Textarea
+                      name="ingresoManual"
+                      id="manual-input"
                       value={valor}
                       onChange={manejarCambio}
                       onKeyDown={manejarKeyDown}
@@ -268,13 +329,14 @@ export default function RandomNumberGenerators() {
                       style={{ resize: "none" }}
                     />
                     <Button
-                      disabled={disabledEnter || valor === ""}
-                      onClick={() => {}}
+                      disabled={
+                        disabledEnter || valor === "" || valor === valorCargado
+                      }
                       className="bg-purple-600 hover:bg-purple-700"
                     >
-                      Procesar
+                      Cargar
                     </Button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </CardContent>
@@ -427,7 +489,7 @@ export default function RandomNumberGenerators() {
           </div>
         )}
 
-        {generatedNumbers.length > 0 && (
+        {isAutomatic && generatedNumbers.length > 0 && (
           <div className="grid grid-cols-1 mb-8">
             <Card className="border-none shadow-lg py-0 gap-0 overflow-hidden">
               <CardHeader className="bg-gradient-to-r py-3 from-cyan-500 to-cyan-600 text-white">
@@ -480,10 +542,18 @@ export default function RandomNumberGenerators() {
             )}
           </div>
         )}
+
         {isAutomatic && (
           <div className="space-y-4">
             <div className="flex justify-center mt-6">
               <EstadisticosTest numeros={generatedNumbers} />
+            </div>
+          </div>
+        )}
+        {!isAutomatic && (
+          <div className="space-y-4">
+            <div className="flex justify-center mt-6">
+              <EstadisticosTest numeros={manualNumbers} />
             </div>
           </div>
         )}

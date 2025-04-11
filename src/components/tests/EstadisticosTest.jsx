@@ -62,7 +62,13 @@ export const EstadisticosTest = ({ numeros }) => {
     if (pruebaSeleccionada === "corridas") {
     }
   };
-
+  useEffect(() => {
+    setResultadoPrueba({
+      esAleatorio: false,
+      estadistico: 0,
+    });
+    setMostrarResultados(false);
+  }, [numeros]);
   const [pruebaSeleccionada, setPruebaSeleccionada] = useState("promedios");
   const [estadisticoComparador, setEstadisticoComparador] = useState(
     ESTADISTICO_INITIAL_VALUE
@@ -113,7 +119,11 @@ export const EstadisticosTest = ({ numeros }) => {
 
   if (!numeros || numeros.length === 0) {
     return (
-      <Alert className={"bg-gradient-to-r py-4  from-cyan-500 to-purple-600 text-white rounded-t-lg"}>
+      <Alert
+        className={
+          "bg-gradient-to-r py-4  from-cyan-500 to-purple-600 text-white rounded-t-lg"
+        }
+      >
         <InfoIcon className="h-4 w-4" />
         <AlertTitle>Sin datos para analizar</AlertTitle>
         <AlertDescription className="text-white">
@@ -155,10 +165,7 @@ export const EstadisticosTest = ({ numeros }) => {
                     setEstadisticoComparador(ESTADISTICO_INITIAL_VALUE);
                   }}
                 >
-                  <SelectTrigger
-                    id="prueba-select"
-                    className=" mt-2 w-full"
-                  >
+                  <SelectTrigger id="prueba-select" className=" mt-2 w-full">
                     <SelectValue placeholder="Seleccionar prueba" />
                   </SelectTrigger>
                   <SelectContent>
@@ -181,8 +188,8 @@ export const EstadisticosTest = ({ numeros }) => {
 
               {pruebaSeleccionada === "promedios" && (
                 <>
-                  <div >
-                    <Label>
+                  <div>
+                    <Label htmlFor="estadisticoComparador">
                       <p>
                         Z<sub>&alpha;</sub>
                       </p>
@@ -199,8 +206,8 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "frecuencia" && (
                 <>
-                  <div >
-                    <Label>
+                  <div>
+                    <Label htmlFor="estadisticoComparador">
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
                       </p>
@@ -213,8 +220,8 @@ export const EstadisticosTest = ({ numeros }) => {
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div >
-                    <Label >
+                  <div>
+                    <Label htmlFor="numeroSubIntervalos">
                       <p>x</p>
                     </Label>
                     <Input
@@ -229,7 +236,7 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "serie" && (
                 <>
-                  <div >
+                  <div>
                     <Label>
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
@@ -243,8 +250,8 @@ export const EstadisticosTest = ({ numeros }) => {
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div >
-                    <Label >
+                  <div>
+                    <Label>
                       <p>x</p>
                     </Label>
                     <Input
@@ -259,7 +266,7 @@ export const EstadisticosTest = ({ numeros }) => {
               )}
               {pruebaSeleccionada === "kolmogorovSmirnov" && (
                 <>
-                  <div >
+                  <div>
                     <Label>
                       <p>
                         𝜒<sup>2</sup> <sub>&alpha;</sub>
@@ -273,8 +280,8 @@ export const EstadisticosTest = ({ numeros }) => {
                       onChange={manejarCambio}
                     />
                   </div>
-                  <div >
-                    <Label >
+                  <div>
+                    <Label>
                       <p>x</p>
                     </Label>
                     <Input
@@ -304,7 +311,7 @@ export const EstadisticosTest = ({ numeros }) => {
                     />
                   </div>
                   <div className="w-full">
-                    <Label >
+                    <Label>
                       <p>x</p>
                     </Label>
                     <Input

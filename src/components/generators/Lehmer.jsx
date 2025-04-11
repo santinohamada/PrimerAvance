@@ -17,7 +17,6 @@ const Lehmer = ({ quantity, setGeneratedNumbers, setMessage }) => {
   const [lehmerSeed, setLehmerSeed] = useState("");
   const [lehmerT, setLehmerT] = useState("");
   const formWithoutAction = async () => {
-    console.log(lehmerSeed, lehmerT, lehmerT.toString().length, quantity);
     const { numeros, mensaje } = await getLehmer(
       lehmerSeed,
       lehmerT,
