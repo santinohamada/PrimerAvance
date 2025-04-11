@@ -342,10 +342,10 @@ export const EstadisticosTest = ({ numeros }) => {
               </div>
               <p className="text-sm text-gray-600">
                 {resultadoPrueba.esAleatorio
-                  ? `no se rechaza la hipótesis de que los números
-provienen de un universo uniformemente distribuido`
-                  : `se rechaza la hipótesis de que los números
-provienen de un universo uniformemente distribuido`}
+                  ? `No se rechaza la hipótesis de que los números
+provienen de un universo uniformemente distribuido.`
+                  : `Se rechaza la hipótesis de que los números
+provienen de un universo uniformemente distribuido.`}
               </p>
 
               <Table>
