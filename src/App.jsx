@@ -228,7 +228,7 @@ export default function RandomNumberGenerators() {
     }
 
     // --- Guion (y variantes): No permitir salto de línea si la línea actual está vacía ---
-    if (key === "-" || key === "–" || key === "—" ||key === ";") {
+    if (key === "-" || key === "–" || key === "—" || key === ";") {
       if (currentLine.trim() === "") {
         e.preventDefault();
         return;

@@ -73,7 +73,7 @@ const MultiplicativeCongruential = ({
   };
   return (
     <>
-      <Card className="border-none p-0 shadow-lg">
+      <Card className="border-none p-0 gap-0 shadow-lg">
         <CardHeader className="bg-gradient-to-r py-3 from-purple-600/90 to-purple-600 text-white rounded-t-lg">
           <CardTitle className="flex items-center gap-2">
             <X className="h-5 w-5" />

@@ -20,14 +20,23 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { postFrequencyTest, postMeanTest } from "@/helpers/queries";
+import {
+  postCorridaTest,
+  postFrequencyTest,
+  postKsTest,
+  postMeanTest,
+  postSerieTest,
+} from "@/helpers/queries";
 import Loader from "../ui/Loader";
 const ESTADISTICO_INITIAL_VALUE = {
   estadisticoComparador: 0,
   numeroSubIntervalos: 1,
-  divisionCeldas: 0,
+  divisionCeldas: 1,
+  numeroDeParesU: 2,
 };
 export const EstadisticosTest = ({ numeros }) => {
+  let comparador = "";
+  let comparador0 = "";
   const formWhitoutAction = async () => {
     if (pruebaSeleccionada === "promedios") {
       const { esAleatorio, estadistico } = await postMeanTest(
@@ -53,15 +62,70 @@ export const EstadisticosTest = ({ numeros }) => {
       setMostrarResultados(true);
     }
 
-    if (pruebaSeleccionada === "series") {
+    if (pruebaSeleccionada === "serie") {
+      const { esAleatorio, estadistico } = await postSerieTest(
+        estadisticoComparador.estadisticoComparador,
+        numeros,
+        estadisticoComparador.numeroDeParesU,
+        estadisticoComparador.numeroSubIntervalos
+      );
+      setResultadoPrueba({
+        esAleatorio,
+        estadistico,
+      });
+      setMostrarResultados(true);
     }
 
     if (pruebaSeleccionada === "kolmogorovSmirnov") {
+      const { esAleatorio, estadistico } = await postKsTest(
+        estadisticoComparador.estadisticoComparador,
+        numeros
+      );
+      setResultadoPrueba({
+        esAleatorio,
+        estadistico,
+      });
+      setMostrarResultados(true);
     }
 
     if (pruebaSeleccionada === "corridas") {
+      const { esAleatorio, estadistico } = await postCorridaTest(
+        estadisticoComparador.estadisticoComparador,
+        numeros
+      );
+      setResultadoPrueba({
+        esAleatorio,
+        estadistico,
+      });
+      setMostrarResultados(true);
     }
   };
+
+  const preventDotComma = (e) => {
+    const tecla = e.key;
+    const esNumero = /^[0-9]$/.test(tecla);
+
+    const teclasPermitidas = [
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
+    ];
+
+    const combinacionesPermitidas =
+      (e.ctrlKey || e.metaKey) &&
+      ["a", "c", "v", "x"].includes(tecla.toLowerCase());
+
+    if (
+      !esNumero &&
+      !teclasPermitidas.includes(tecla) &&
+      !combinacionesPermitidas
+    ) {
+      e.preventDefault(); // Bloquea lo que no está permitido
+    }
+  };
+
   useEffect(() => {
     setResultadoPrueba({
       esAleatorio: false,
@@ -87,7 +151,11 @@ export const EstadisticosTest = ({ numeros }) => {
     // Habilita/deshabilita botón enter
     setDisabledEnter(input === "");
 
-    if (id === "numeroSubIntervalos") {
+    if (
+      id === "numeroSubIntervalos" ||
+      id === "divisionCeldas" ||
+      id === "numeroParesDeU"
+    ) {
       // Solo permitir números enteros (sin puntos)
       input = input.replace(/[^0-9]/g, "");
 
@@ -100,6 +168,16 @@ export const EstadisticosTest = ({ numeros }) => {
         setDisabledEnter(true);
       }
     } else {
+      if (input.startsWith(".")) {
+        setDisabledEnter(true);
+        e.preventDefault();
+        return;
+      }
+      if (input === ",") {
+        setDisabledEnter(true);
+        e.preventDefault();
+        return;
+      }
       // Permitir solo números y un solo punto decimal
       input = input.replace(/[^0-9.]/g, "");
 
@@ -133,7 +211,6 @@ export const EstadisticosTest = ({ numeros }) => {
       </Alert>
     );
   }
-
   const nombresPruebas = {
     promedios: "Prueba de Promedios",
     frecuencia: "Prueba de Frecuencia",
@@ -141,6 +218,67 @@ export const EstadisticosTest = ({ numeros }) => {
     kolmogorovSmirnov: "Prueba de Kolmogorov-Smirnov",
     corridas: "Prueba de Corridas",
   };
+  if (pruebaSeleccionada === "promedios") {
+    comparador = (
+      <>
+        Z<sub>&alpha;</sub>
+      </>
+    );
+    comparador0 = (
+      <>
+        Z<sub>0</sub>
+      </>
+    );
+  }
+  if (pruebaSeleccionada === "frecuencia") {
+    comparador = (
+      <>
+        𝜒<sup>2</sup> <sub>&alpha;</sub>
+      </>
+    );
+    comparador0 = (
+      <>
+        Z<sub>0</sub>
+      </>
+    );
+  }
+  if (pruebaSeleccionada === "serie") {
+    comparador = (
+      <>
+        𝜒<sup>2</sup>
+        <sub>&alpha;</sub>
+      </>
+    );
+    comparador0 = (
+      <>
+        𝜒<sup>2</sup>
+      </>
+    );
+  }
+  if (pruebaSeleccionada === "kolmogorovSmirnov") {
+    comparador = (
+      <>
+        d<sub>&alpha;,n</sub>
+      </>
+    );
+    comparador0 = (
+      <>
+        D<sub>n</sub>
+      </>
+    );
+  }
+  if (pruebaSeleccionada === "corridas") {
+    comparador = (
+      <>
+        𝜒<sub>&alpha;,n/2</sub>
+      </>
+    );
+    comparador0 = (
+      <>
+        𝜒<sup>2</sup>
+      </>
+    );
+  }
 
   return (
     <Card className="mt-6 pb-2 pt-0 w-full md:w-3/4">
@@ -190,14 +328,12 @@ export const EstadisticosTest = ({ numeros }) => {
                 <>
                   <div>
                     <Label htmlFor="estadisticoComparador">
-                      <p>
-                        Z<sub>&alpha;</sub>
-                      </p>
+                      <p>{comparador}</p>
                     </Label>
                     <Input
                       className={"mt-2"}
                       id="estadisticoComparador"
-                      type="number"
+                      type="text"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
@@ -208,14 +344,12 @@ export const EstadisticosTest = ({ numeros }) => {
                 <>
                   <div>
                     <Label htmlFor="estadisticoComparador">
-                      <p>
-                        𝜒<sup>2</sup> <sub>&alpha;</sub>
-                      </p>
+                      <p>{comparador}</p>
                     </Label>
                     <Input
                       className={"mt-2"}
                       id="estadisticoComparador"
-                      type="number"
+                      type="text"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
@@ -229,6 +363,7 @@ export const EstadisticosTest = ({ numeros }) => {
                       id="numeroSubIntervalos"
                       type="text"
                       value={estadisticoComparador.numeroSubIntervalos}
+                      onKeyDown={preventDotComma}
                       onChange={manejarCambio}
                     />
                   </div>
@@ -238,14 +373,12 @@ export const EstadisticosTest = ({ numeros }) => {
                 <>
                   <div>
                     <Label>
-                      <p>
-                        𝜒<sup>2</sup> <sub>&alpha;</sub>
-                      </p>
+                      <p>{comparador}</p>
                     </Label>
                     <Input
                       className={"mt-2"}
                       id="estadisticoComparador"
-                      type="number"
+                      type="text"
                       value={estadisticoComparador.estadisticoComparador}
                       onChange={manejarCambio}
                     />
@@ -259,6 +392,20 @@ export const EstadisticosTest = ({ numeros }) => {
                       id="numeroSubIntervalos"
                       type="number"
                       value={estadisticoComparador.numeroSubIntervalos}
+                      onKeyDown={preventDotComma}
+                      onChange={manejarCambio}
+                    />
+                  </div>
+                  <div>
+                    <Label>
+                      <p>n (numeros de pares de u)</p>
+                    </Label>
+                    <Input
+                      className={"mt-2"}
+                      id="numeroDeParesU"
+                      type="number"
+                      value={estadisticoComparador.numeroDeParesU}
+                      onKeyDown={preventDotComma}
                       onChange={manejarCambio}
                     />
                   </div>
@@ -268,27 +415,13 @@ export const EstadisticosTest = ({ numeros }) => {
                 <>
                   <div>
                     <Label>
-                      <p>
-                        𝜒<sup>2</sup> <sub>&alpha;</sub>
-                      </p>
+                      <p>{comparador}</p>
                     </Label>
                     <Input
                       className={"mt-2"}
                       id="estadisticoComparador"
-                      type="number"
+                      type="text"
                       value={estadisticoComparador.estadisticoComparador}
-                      onChange={manejarCambio}
-                    />
-                  </div>
-                  <div>
-                    <Label>
-                      <p>x</p>
-                    </Label>
-                    <Input
-                      className={"mt-2"}
-                      id="numeroSubIntervalos"
-                      type="number"
-                      value={estadisticoComparador.numeroSubIntervalos}
                       onChange={manejarCambio}
                     />
                   </div>
@@ -298,27 +431,13 @@ export const EstadisticosTest = ({ numeros }) => {
                 <>
                   <div className="w-full">
                     <Label>
-                      <p>
-                        𝜒<sup>2</sup> <sub>&alpha;</sub>
-                      </p>
+                      <p>{comparador}</p>
                     </Label>
                     <Input
                       className={"mt-2"}
                       id="estadisticoComparador"
-                      type="number"
+                      type="text"
                       value={estadisticoComparador.estadisticoComparador}
-                      onChange={manejarCambio}
-                    />
-                  </div>
-                  <div className="w-full">
-                    <Label>
-                      <p>x</p>
-                    </Label>
-                    <Input
-                      className={"mt-2"}
-                      id="numeroSubIntervalos"
-                      type="number"
-                      value={estadisticoComparador.numeroSubIntervalos}
                       onChange={manejarCambio}
                     />
                   </div>
@@ -359,13 +478,11 @@ provienen de un universo uniformemente distribuido.`}
                 <TableHeader>
                   <TableRow>
                     <TableHead>
-                      <p>
-                        Z<sub>0</sub>
-                      </p>
+                      <p>{comparador0}</p>
                     </TableHead>
                     <TableHead className="ms-[2rem]">
                       <p>
-                        ¿ |Z<sub>0</sub>| &lt; Z<sub>&alpha;</sub> ?
+                        ¿ |{comparador0}| &lt; {comparador} ?
                       </p>
                     </TableHead>
                     <TableHead>Resultado</TableHead>

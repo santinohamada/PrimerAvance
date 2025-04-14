@@ -65,40 +65,97 @@ export const postAdditiveCongruential = async (m, tot, semillas) => {
     console.log(error);
   }
 };
-export const postMeanTest = async (comparador,valoresU) => {
+export const postMeanTest = async (comparador, valoresU) => {
   try {
     const fetchedData = await fetch(
       `https://generadoresypruebasapi.onrender.com/prueba/promedios`,
       {
         method: "POST",
-        body: JSON.stringify({ comparador,valoresU}),
+        body: JSON.stringify({ comparador, valoresU }),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
 
-    const { esAleatorio,estadistico } = await fetchedData.json();
-    return { esAleatorio,estadistico } ;
+    const { esAleatorio, estadistico } = await fetchedData.json();
+    return { esAleatorio, estadistico };
   } catch (error) {
     console.log(error);
   }
 };
-export const postFrequencyTest = async (comparador,valoresU,x) => {
+export const postSerieTest = async (comparador, valoresU, n, x) => {
+  try {
+    const fetchedData = await fetch(
+      `https://generadoresypruebasapi.onrender.com/prueba/series`,
+      {
+        method: "POST",
+        body: JSON.stringify({ comparador, valoresU, n, x }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { esAleatorio, estadistico } = await fetchedData.json();
+    return { esAleatorio, estadistico };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const postKsTest = async (comparador, valoresU) => {
+  try {
+    const fetchedData = await fetch(
+      `https://generadoresypruebasapi.onrender.com/prueba/ks`,
+      {
+        method: "POST",
+        body: JSON.stringify({ comparador, valoresU }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { esAleatorio, estadistico } = await fetchedData.json();
+    return { esAleatorio, estadistico };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const postCorridaTest = async (comparador, valoresU) => {
+  try {
+    const fetchedData = await fetch(
+      `https://generadoresypruebasapi.onrender.com/prueba/corrida`,
+      {
+        method: "POST",
+        body: JSON.stringify({ comparador, valoresU }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { esAleatorio, estadistico } = await fetchedData.json();
+    return { esAleatorio, estadistico };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const postFrequencyTest = async (comparador, valoresU, x) => {
   try {
     const fetchedData = await fetch(
       `https://generadoresypruebasapi.onrender.com/prueba/frecuencia`,
       {
         method: "POST",
-        body: JSON.stringify({ comparador,valoresU,x}),
+        body: JSON.stringify({ comparador, valoresU, x }),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
 
-    const { esAleatorio,estadistico } = await fetchedData.json();
-    return { esAleatorio,estadistico } ;
+    const { esAleatorio, estadistico } = await fetchedData.json();
+    return { esAleatorio, estadistico };
   } catch (error) {
     console.log(error);
   }
