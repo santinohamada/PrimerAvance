@@ -34,14 +34,17 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
     if (value !== "") {
       value = +value;
     }
- 
-    if (isN && value >= middleSquareSeed.toString().length) {
-      value = middleSquareSeed.toString().length;
+
+    if (!isN && Math.pow(value, 2).toString().length <= middleSquareN) {
+      setMiddleSquareN(Math.pow(value, 2).toString().length);
+    }
+    if (isN && value >= Math.pow(middleSquareSeed, 2).toString().length) {
+      value = Math.pow(middleSquareSeed, 2).toString().length;
     }
     if (value === 0) {
       value = 1;
     }
-    
+
     setter(value);
   };
 
