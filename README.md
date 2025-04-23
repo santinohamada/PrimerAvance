@@ -108,11 +108,3 @@ PrimerAvance/
 | ![Iñaki Garcia](https://github.com/inakigarcia1.png) | [inakigarcia1](https://github.com/inakigarcia1) |
 | ![Santino Hamada](https://github.com/santinohamada.png) | [Santino Hamada](https://github.com/santinohamada) |
 | ![Emmanuel Arnedo](https://github.com/emmanuelarnedo.png) | [emmanuelarnedo](https://github.com/emmanuelarnedo) |
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
-
----
-_Desarrollado por Santino Hamada © 2025_
-
