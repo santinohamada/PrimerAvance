@@ -325,7 +325,9 @@ export default function RandomNumberGenerators() {
                       value={valor}
                       onChange={manejarCambio}
                       onKeyDown={manejarKeyDown}
-                      placeholder="Ej:\n3.14\n2.71\n1.618"
+                      placeholder={`3.14
+2.71
+1.1618`}
                       rows={6}
                       cols={30}
                       style={{ resize: "none" }}
