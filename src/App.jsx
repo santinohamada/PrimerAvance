@@ -279,7 +279,7 @@ export default function RandomNumberGenerators() {
       <div className="container mx-auto py-8 max-w-5xl px-4">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-cyan-500 bg-clip-text text-transparent">
-            Generadores de Números Aleatorios
+          Generación y Validación de Números Pseudoaleatorios
           </h1>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Herramienta para generar y analizar secuencias de números

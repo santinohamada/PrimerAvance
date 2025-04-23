@@ -32,7 +32,6 @@ const ESTADISTICO_INITIAL_VALUE = {
   estadisticoComparador: 0,
   numeroSubIntervalos: 1,
   divisionCeldas: 1,
-  numeroDeParesU: 2,
 };
 export const EstadisticosTest = ({ numeros }) => {
   let comparador = "";
@@ -63,10 +62,15 @@ export const EstadisticosTest = ({ numeros }) => {
     }
 
     if (pruebaSeleccionada === "serie") {
+      let numerosMandar = [...numeros]
+      if(numerosMandar.length % 2 !==0){
+        numerosMandar = [...numeros,0]
+      }
+     
       const { esAleatorio, estadistico } = await postSerieTest(
         estadisticoComparador.estadisticoComparador,
-        numeros,
-        estadisticoComparador.numeroDeParesU,
+        numerosMandar,
+        numerosMandar.length / 2,
         estadisticoComparador.numeroSubIntervalos
       );
       setResultadoPrueba({
@@ -372,6 +376,7 @@ export const EstadisticosTest = ({ numeros }) => {
               {pruebaSeleccionada === "serie" && (
                 <>
                   <div>
+                    <p style={{fontSize:15}} className="text-gray-500 mb-3">Aviso: Si la cantidad de numeros ingresados es impar, se agregara un Ui = 0 al final</p>
                     <Label>
                       <p>{comparador}</p>
                     </Label>
@@ -392,19 +397,6 @@ export const EstadisticosTest = ({ numeros }) => {
                       id="numeroSubIntervalos"
                       type="number"
                       value={estadisticoComparador.numeroSubIntervalos}
-                      onKeyDown={preventDotComma}
-                      onChange={manejarCambio}
-                    />
-                  </div>
-                  <div>
-                    <Label>
-                      <p>n (numeros de pares de u)</p>
-                    </Label>
-                    <Input
-                      className={"mt-2"}
-                      id="numeroDeParesU"
-                      type="number"
-                      value={estadisticoComparador.numeroDeParesU}
                       onKeyDown={preventDotComma}
                       onChange={manejarCambio}
                     />

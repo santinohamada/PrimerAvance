@@ -88,7 +88,14 @@ const AdditiveCongruential = ({
       setSeeds(newSeeds);
     }
   };
-
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const filtered = pasted.replace(/[^0-9]/g, "");
+    const { selectionStart, selectionEnd } = e.target;
+  
+    e.target.setRangeText(filtered, selectionStart, selectionEnd, "end");
+  };
   return (
     <>
       <Card className="border-none p-0 gap-0 shadow-lg">
@@ -118,7 +125,7 @@ const AdditiveCongruential = ({
                     </Label>
                   </div>
                   <Input
-                    type="number"
+                    onPaste={handlePaste}
                     value={seed}
                     min="0"
                     onChange={(e) => handleSeedChange(index, e.target.value)}
@@ -148,7 +155,7 @@ const AdditiveCongruential = ({
             <div className="flex flex-col space-y-2">
               <Label>Módulo (m)</Label>
               <Input
-                type="number"
+                onPaste={handlePaste}
                 value={modulo}
                 onChange={(e) => handleNumberInput(e, setModulo)}
                 onKeyDown={preventDotComma}

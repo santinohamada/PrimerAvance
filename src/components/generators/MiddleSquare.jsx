@@ -29,6 +29,14 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
     formWithoutAction,
     null
   );
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const filtered = pasted.replace(/[^0-9]/g, "");
+    const { selectionStart, selectionEnd } = e.target;
+  
+    e.target.setRangeText(filtered, selectionStart, selectionEnd, "end");
+  };
   const handleNumberInput = (e, setter, isN = false) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
     if (value !== "") {
@@ -96,9 +104,10 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
                 Semilla M (Valor Inicial)
               </Label>
               <Input
+                 onPaste={handlePaste}
                 placeholder="0"
                 id="middle-square-seed"
-                type="number"
+                type="text"
                 value={middleSquareSeed}
                 onChange={(e) => handleNumberInput(e, setMiddleSquareSeed)}
                 onKeyDown={preventDotComma}
@@ -110,9 +119,10 @@ const MiddleSquare = ({ quantity, setGeneratedNumbers, setMessage }) => {
                 Número de dígitos a tomar (N)
               </Label>
               <Input
+              onPaste={handlePaste}
                 placeholder="0"
                 id="middle-square-N"
-                type="number"
+                type="text"
                 value={middleSquareN}
                 onChange={(e) => handleNumberInput(e, setMiddleSquareN, true)}
                 onKeyDown={preventDotComma}

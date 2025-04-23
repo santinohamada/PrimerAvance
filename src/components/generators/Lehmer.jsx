@@ -30,6 +30,14 @@ const Lehmer = ({ quantity, setGeneratedNumbers, setMessage }) => {
     formWithoutAction,
     null
   );
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const filtered = pasted.replace(/[^0-9]/g, "");
+    const { selectionStart, selectionEnd } = e.target;
+  
+    e.target.setRangeText(filtered, selectionStart, selectionEnd, "end");
+  };
   const handleNumberInput = (e, setter, isT = false) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
     if (value !== "") {
@@ -95,7 +103,7 @@ const Lehmer = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="lehmer-seed"
-                type="number"
+                onPaste={handlePaste}
                 value={lehmerSeed}
                 onChange={(e) => handleNumberInput(e, setLehmerSeed)}
                 onKeyDown={preventDotComma}
@@ -108,7 +116,7 @@ const Lehmer = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="lehmer-t"
-                type="number"
+                onPaste={handlePaste}
                 value={lehmerT}
                 onChange={(e) => handleNumberInput(e, setLehmerT, true)}
                 onKeyDown={preventDotComma}

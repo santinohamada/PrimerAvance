@@ -43,7 +43,14 @@ const MixedCongruential = ({ quantity, setGeneratedNumbers, setMessage }) => {
     }
     setter(value);
   };
-
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const filtered = pasted.replace(/[^0-9]/g, "");
+    const { selectionStart, selectionEnd } = e.target;
+  
+    e.target.setRangeText(filtered, selectionStart, selectionEnd, "end");
+  };
   const preventDotComma = (e) => {
     const tecla = e.key;
     const esNumero = /^[0-9]$/.test(tecla);
@@ -93,7 +100,7 @@ const MixedCongruential = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="mixed-seed"
-                type="number"
+                onPaste={handlePaste}
                 value={mixedN}
                 onChange={(e) => handleNumberInput(e, setMixedN)}
                 onKeyDown={preventDotComma}
@@ -105,7 +112,7 @@ const MixedCongruential = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="mixed-a"
-                type="number"
+                onPaste={handlePaste}
                 value={mixedA}
                 onChange={(e) => handleNumberInput(e, setMixedA)}
                 onKeyDown={preventDotComma}
@@ -118,7 +125,7 @@ const MixedCongruential = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="mixed-c"
-                type="number"
+                onPaste={handlePaste}
                 value={mixedC}
                 onChange={(e) => handleNumberInput(e, setMixedC)}
                 onKeyDown={preventDotComma}
@@ -130,7 +137,7 @@ const MixedCongruential = ({ quantity, setGeneratedNumbers, setMessage }) => {
               </Label>
               <Input
                 id="mixed-m"
-                type="number"
+                onPaste={handlePaste}
                 value={mixedM}
                 onChange={(e) => handleNumberInput(e, setMixedM)}
                 onKeyDown={preventDotComma}

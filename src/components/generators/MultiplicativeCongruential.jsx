@@ -71,6 +71,14 @@ const MultiplicativeCongruential = ({
       e.preventDefault(); // Bloquea lo que no está permitido
     }
   };
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData("text");
+    const filtered = pasted.replace(/[^0-9]/g, "");
+    const { selectionStart, selectionEnd } = e.target;
+  
+    e.target.setRangeText(filtered, selectionStart, selectionEnd, "end");
+  };
   return (
     <>
       <Card className="border-none p-0 gap-0 shadow-lg">
@@ -98,7 +106,7 @@ const MultiplicativeCongruential = ({
               </Label>
               <Input
                 id="multiplicative-seed"
-                type="number"
+                onPaste={handlePaste}
                 value={multiplicativeN}
                 onChange={(e) => handleNumberInput(e, setMultiplicativeN)}
                 onKeyDown={preventDotComma}
@@ -110,7 +118,7 @@ const MultiplicativeCongruential = ({
               </Label>
               <Input
                 id="multiplicative-a"
-                type="number"
+                onPaste={handlePaste}
                 value={multiplicativeA}
                 onChange={(e) => handleNumberInput(e, setMultiplicativeA)}
                 onKeyDown={preventDotComma}
@@ -123,7 +131,7 @@ const MultiplicativeCongruential = ({
               </Label>
               <Input
                 id="multiplicative-m"
-                type="number"
+                onPaste={handlePaste}
                 value={multiplicativeM}
                 onChange={(e) => handleNumberInput(e, setMultiplicativeM)}
                 onKeyDown={preventDotComma}
