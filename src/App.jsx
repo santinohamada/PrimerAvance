@@ -296,7 +296,7 @@ export default function RandomNumberGenerators() {
               className="data-[state=checked]:bg-purple-600"
             />
             <Label htmlFor="automatic-mode" className="font-medium">
-              {isAutomatic ? "Generación Automática" : "Ingreso Manual"}
+            Generación Automática
             </Label>
           </div>
         </div>
