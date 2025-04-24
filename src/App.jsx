@@ -277,8 +277,8 @@ export default function RandomNumberGenerators() {
   return (
     <div className="min-h-screen bg-gradient-to-b  from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       <div className="container mx-auto py-8 max-w-5xl px-4">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-cyan-500 bg-clip-text text-transparent">
+        <div className="text-center  mb-10">
+          <h1 className="text-4xl p-2 font-bold mb-1 bg-gradient-to-r from-purple-600 to-cyan-500 bg-clip-text text-transparent">
           Generación y Validación de Números Pseudoaleatorios
           </h1>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
